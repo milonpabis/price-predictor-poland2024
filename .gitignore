@@ -10,3 +10,5 @@ otodom_data_raw.csv
 otodom_50k_raw.csv
 otodom_data_raw100k.csv
 models/*
+*.csv
+*.txt
