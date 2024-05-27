@@ -1,5 +1,6 @@
 from assets.UI.MainWindow import Ui_MainWindow
-from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QGraphicsDropShadowEffect
+from assets.UI.EntryForm import Ui_Form
+from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QGraphicsDropShadowEffect, QDialog
 from PySide6.QtGui import QIcon
 from functools import partial
 import numpy as np
@@ -89,6 +90,32 @@ class GUI(QMainWindow, Ui_MainWindow):
         for b in self.buttons:
             b.setIcon(self.NO_ICON)
             b.setChecked(False)
+
+
+
+class EntryForm(QDialog, Ui_Form):
+
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+        self.setWindowTitle("Flat Price Prediction 2024")
+        self.setWindowIcon(QIcon("assets/images/house.jpg"))
+        self.pushButton_2.setGraphicsEffect(SHADOWS_ENTRY[0])
+        self.pushButton.setGraphicsEffect(SHADOWS_ENTRY[1])
+
+        self.pushButton.clicked.connect(self.poland)
+        self.pushButton_2.clicked.connect(self.krakow)
+
+    def poland(self):
+        self.close()
+        self.window = GUI()
+        print("P:")
+        self.window.show()
+
+    def krakow(self):
+        self.close()
+        self.window = GUI()
+        self.window.show()
 
 
 

@@ -13,3 +13,5 @@ models/*
 *.csv
 *.txt
 krk2.jpg
+*.autosave
+*__pycache__*
