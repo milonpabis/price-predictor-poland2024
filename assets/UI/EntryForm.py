@@ -124,14 +124,14 @@ class Ui_Form(object):
         self.frame_7.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_5 = QHBoxLayout(self.frame_7)
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
-        self.pushButton = QPushButton(self.frame_7)
-        self.pushButton.setObjectName(u"pushButton")
-        self.pushButton.setMinimumSize(QSize(0, 45))
+        self.bt_poland = QPushButton(self.frame_7)
+        self.bt_poland.setObjectName(u"bt_poland")
+        self.bt_poland.setMinimumSize(QSize(0, 45))
         font2 = QFont()
         font2.setFamilies([u"Rockwell"])
         font2.setPointSize(14)
-        self.pushButton.setFont(font2)
-        self.pushButton.setStyleSheet(u"QPushButton {\n"
+        self.bt_poland.setFont(font2)
+        self.bt_poland.setStyleSheet(u"QPushButton {\n"
 "  background-color: #fbeee0;\n"
 "  border: 2px solid #422800;\n"
 "  border-radius: 10px;\n"
@@ -142,7 +142,7 @@ class Ui_Form(object):
 "  background-color: #fff;\n"
 "}")
 
-        self.horizontalLayout_5.addWidget(self.pushButton)
+        self.horizontalLayout_5.addWidget(self.bt_poland)
 
 
         self.verticalLayout_2.addWidget(self.frame_7)
@@ -153,11 +153,11 @@ class Ui_Form(object):
         self.frame_8.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_6 = QHBoxLayout(self.frame_8)
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
-        self.pushButton_2 = QPushButton(self.frame_8)
-        self.pushButton_2.setObjectName(u"pushButton_2")
-        self.pushButton_2.setMinimumSize(QSize(0, 45))
-        self.pushButton_2.setFont(font2)
-        self.pushButton_2.setStyleSheet(u"QPushButton {\n"
+        self.bt_krakow = QPushButton(self.frame_8)
+        self.bt_krakow.setObjectName(u"bt_krakow")
+        self.bt_krakow.setMinimumSize(QSize(0, 45))
+        self.bt_krakow.setFont(font2)
+        self.bt_krakow.setStyleSheet(u"QPushButton {\n"
 "  background-color: #fbeee0;\n"
 "  border: 2px solid #422800;\n"
 "  border-radius: 10px;\n"
@@ -168,7 +168,7 @@ class Ui_Form(object):
 "  background-color: #fff;\n"
 "}")
 
-        self.horizontalLayout_6.addWidget(self.pushButton_2)
+        self.horizontalLayout_6.addWidget(self.bt_krakow)
 
 
         self.verticalLayout_2.addWidget(self.frame_8)
@@ -188,9 +188,9 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
         self.label.setText(QCoreApplication.translate("Form", u"Flat Price Estimator 2024", None))
-        self.label_2.setText(QCoreApplication.translate("Form", u"Model - Poland (+-79k)", None))
-        self.label_3.setText(QCoreApplication.translate("Form", u"Model - Krakow (+-55k)", None))
-        self.pushButton.setText(QCoreApplication.translate("Form", u"Poland", None))
-        self.pushButton_2.setText(QCoreApplication.translate("Form", u"Krakow", None))
+        self.label_2.setText(QCoreApplication.translate("Form", u"Model - Poland         (+-79.000)PLN", None))
+        self.label_3.setText(QCoreApplication.translate("Form", u"Model - Krakow       (+-55.000)PLN", None))
+        self.bt_poland.setText(QCoreApplication.translate("Form", u"Poland", None))
+        self.bt_krakow.setText(QCoreApplication.translate("Form", u"Krakow", None))
     # retranslateUi
 

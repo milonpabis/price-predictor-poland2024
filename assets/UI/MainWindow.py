@@ -326,6 +326,7 @@ class Ui_MainWindow(object):
         self.bt_ownership.setObjectName(u"bt_ownership")
         self.bt_ownership.setMinimumSize(QSize(32, 32))
         self.bt_ownership.setMaximumSize(QSize(32, 32))
+        self.bt_ownership.setCursor(QCursor(Qt.PointingHandCursor))
         self.bt_ownership.setStyleSheet(u"")
         self.bt_ownership.setIconSize(QSize(32, 32))
         self.bt_ownership.setCheckable(True)
@@ -370,6 +371,7 @@ class Ui_MainWindow(object):
         self.bt_status.setObjectName(u"bt_status")
         self.bt_status.setMinimumSize(QSize(32, 32))
         self.bt_status.setMaximumSize(QSize(32, 32))
+        self.bt_status.setCursor(QCursor(Qt.PointingHandCursor))
         self.bt_status.setIconSize(QSize(32, 32))
         self.bt_status.setCheckable(True)
 
@@ -413,6 +415,7 @@ class Ui_MainWindow(object):
         self.bt_balcony.setObjectName(u"bt_balcony")
         self.bt_balcony.setMinimumSize(QSize(32, 32))
         self.bt_balcony.setMaximumSize(QSize(32, 32))
+        self.bt_balcony.setCursor(QCursor(Qt.PointingHandCursor))
         self.bt_balcony.setIconSize(QSize(32, 32))
         self.bt_balcony.setCheckable(True)
 
@@ -456,6 +459,7 @@ class Ui_MainWindow(object):
         self.bt_terrace.setObjectName(u"bt_terrace")
         self.bt_terrace.setMinimumSize(QSize(32, 32))
         self.bt_terrace.setMaximumSize(QSize(32, 32))
+        self.bt_terrace.setCursor(QCursor(Qt.PointingHandCursor))
         self.bt_terrace.setIconSize(QSize(32, 32))
         self.bt_terrace.setCheckable(True)
 
@@ -513,6 +517,7 @@ class Ui_MainWindow(object):
         self.bt_garden.setObjectName(u"bt_garden")
         self.bt_garden.setMinimumSize(QSize(32, 32))
         self.bt_garden.setMaximumSize(QSize(32, 32))
+        self.bt_garden.setCursor(QCursor(Qt.PointingHandCursor))
         self.bt_garden.setIconSize(QSize(32, 32))
         self.bt_garden.setCheckable(True)
 
@@ -556,6 +561,7 @@ class Ui_MainWindow(object):
         self.bt_garage.setObjectName(u"bt_garage")
         self.bt_garage.setMinimumSize(QSize(32, 32))
         self.bt_garage.setMaximumSize(QSize(32, 32))
+        self.bt_garage.setCursor(QCursor(Qt.PointingHandCursor))
         self.bt_garage.setIconSize(QSize(32, 32))
         self.bt_garage.setCheckable(True)
 
@@ -599,6 +605,7 @@ class Ui_MainWindow(object):
         self.bt_lift.setObjectName(u"bt_lift")
         self.bt_lift.setMinimumSize(QSize(32, 32))
         self.bt_lift.setMaximumSize(QSize(32, 32))
+        self.bt_lift.setCursor(QCursor(Qt.PointingHandCursor))
         self.bt_lift.setIconSize(QSize(32, 32))
         self.bt_lift.setCheckable(True)
 
@@ -642,6 +649,7 @@ class Ui_MainWindow(object):
         self.bt_city.setObjectName(u"bt_city")
         self.bt_city.setMinimumSize(QSize(32, 32))
         self.bt_city.setMaximumSize(QSize(32, 32))
+        self.bt_city.setCursor(QCursor(Qt.PointingHandCursor))
         self.bt_city.setIconSize(QSize(32, 32))
         self.bt_city.setCheckable(True)
 
@@ -704,13 +712,27 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setSpacing(20)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(80, 0, 80, 0)
-        self.bt_calculate = QPushButton(self.tail)
-        self.bt_calculate.setObjectName(u"bt_calculate")
-        self.bt_calculate.setMinimumSize(QSize(0, 50))
+        self.bt_goback = QPushButton(self.tail)
+        self.bt_goback.setObjectName(u"bt_goback")
+        self.bt_goback.setMinimumSize(QSize(32, 32))
+        self.bt_goback.setMaximumSize(QSize(32, 32))
         font4 = QFont()
         font4.setPointSize(12)
         font4.setBold(True)
+        self.bt_goback.setFont(font4)
+        self.bt_goback.setCursor(QCursor(Qt.PointingHandCursor))
+        self.bt_goback.setStyleSheet(u"")
+        icon = QIcon(QIcon.fromTheme(u"go-previous"))
+        self.bt_goback.setIcon(icon)
+        self.bt_goback.setIconSize(QSize(32, 32))
+
+        self.horizontalLayout.addWidget(self.bt_goback)
+
+        self.bt_calculate = QPushButton(self.tail)
+        self.bt_calculate.setObjectName(u"bt_calculate")
+        self.bt_calculate.setMinimumSize(QSize(0, 50))
         self.bt_calculate.setFont(font4)
+        self.bt_calculate.setCursor(QCursor(Qt.PointingHandCursor))
         self.bt_calculate.setStyleSheet(u"QPushButton {\n"
 "  background-color: #fbeee0;\n"
 "  border: 2px solid #422800;\n"
@@ -728,6 +750,7 @@ class Ui_MainWindow(object):
         self.bt_reset.setObjectName(u"bt_reset")
         self.bt_reset.setMinimumSize(QSize(0, 50))
         self.bt_reset.setFont(font4)
+        self.bt_reset.setCursor(QCursor(Qt.PointingHandCursor))
         self.bt_reset.setStyleSheet(u"QPushButton {\n"
 "  background-color: #fbeee0;\n"
 "  border: 2px solid #422800;\n"
@@ -777,6 +800,7 @@ class Ui_MainWindow(object):
         self.label_13.setText(QCoreApplication.translate("MainWindow", u"Popular City?", None))
         self.bt_city.setText("")
         self.lb_prediction.setText(QCoreApplication.translate("MainWindow", u"100.000PLN - 180.000PLN", None))
+        self.bt_goback.setText("")
         self.bt_calculate.setText(QCoreApplication.translate("MainWindow", u"Calculate", None))
         self.bt_reset.setText(QCoreApplication.translate("MainWindow", u"Reset", None))
     # retranslateUi

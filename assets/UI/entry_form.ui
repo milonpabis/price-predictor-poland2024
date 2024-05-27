@@ -116,7 +116,7 @@ border: 1px solid black;
 border-radius: 10px;</string>
               </property>
               <property name="text">
-               <string>Model - Poland (+-79k)</string>
+               <string>Model - Poland         (+-79.000)PLN</string>
               </property>
               <property name="margin">
                <number>10</number>
@@ -152,7 +152,7 @@ border-radius: 10px;</string>
 border-radius: 10px;</string>
               </property>
               <property name="text">
-               <string>Model - Krakow (+-55k)</string>
+               <string>Model - Krakow       (+-55.000)PLN</string>
               </property>
               <property name="margin">
                <number>10</number>
@@ -184,7 +184,7 @@ border-radius: 10px;</string>
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_5">
             <item>
-             <widget class="QPushButton" name="pushButton">
+             <widget class="QPushButton" name="bt_poland">
               <property name="minimumSize">
                <size>
                 <width>0</width>
@@ -227,7 +227,7 @@ QPushButton:hover {
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_6">
             <item>
-             <widget class="QPushButton" name="pushButton_2">
+             <widget class="QPushButton" name="bt_krakow">
               <property name="minimumSize">
                <size>
                 <width>0</width>
