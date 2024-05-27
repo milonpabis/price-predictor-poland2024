@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'mainwindow.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.2
+## Created by: Qt User Interface Compiler version 6.7.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -23,13 +23,11 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(600, 600)
+        MainWindow.resize(600, 675)
         MainWindow.setMinimumSize(QSize(600, 0))
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.centralwidget.setStyleSheet(u"#centralwidget {\n"
-"	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 	stop:0 rgba(255, 255, 255, 255), stop:0.495 rgba(255, 255, 255, 255), stop:  0.505 rgba(255, 0, 0, 255), stop:1 rgba(255, 0, 0, 255));\n"
-"}")
+        self.centralwidget.setStyleSheet(u"")
         self.verticalLayout = QVBoxLayout(self.centralwidget)
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName(u"verticalLayout")
@@ -38,6 +36,7 @@ class Ui_MainWindow(object):
         self.head.setObjectName(u"head")
         self.head.setStyleSheet(u"#head {\n"
 " background-color: rgba(250, 250, 250, 180);\n"
+"background-color: rgba(239, 234, 178, 180);\n"
 "}")
         self.head.setFrameShape(QFrame.NoFrame)
         self.head.setFrameShadow(QFrame.Raised)
@@ -46,6 +45,7 @@ class Ui_MainWindow(object):
         self.label = QLabel(self.head)
         self.label.setObjectName(u"label")
         font = QFont()
+        font.setFamilies([u"Rockwell"])
         font.setPointSize(22)
         font.setBold(True)
         self.label.setFont(font)
@@ -83,6 +83,7 @@ class Ui_MainWindow(object):
         self.label_2 = QLabel(self.frame_17)
         self.label_2.setObjectName(u"label_2")
         font1 = QFont()
+        font1.setFamilies([u"Rockwell"])
         font1.setPointSize(10)
         font1.setBold(True)
         self.label_2.setFont(font1)
@@ -101,6 +102,19 @@ class Ui_MainWindow(object):
         self.verticalLayout_34.setObjectName(u"verticalLayout_34")
         self.sb_area = QSpinBox(self.frame_18)
         self.sb_area.setObjectName(u"sb_area")
+        self.sb_area.setMinimumSize(QSize(0, 30))
+        font2 = QFont()
+        font2.setFamilies([u"Rockwell"])
+        font2.setPointSize(11)
+        self.sb_area.setFont(font2)
+        self.sb_area.setStyleSheet(u"QComboBox {\n"
+"  background-color: #fbeee0;\n"
+"  border: 2px solid #422800;\n"
+"  border-radius: 5px;\n"
+"  color: #422800;\n"
+"}\n"
+"")
+        self.sb_area.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
         self.sb_area.setMinimum(20)
         self.sb_area.setMaximum(80)
 
@@ -143,6 +157,16 @@ class Ui_MainWindow(object):
         self.verticalLayout_35.setObjectName(u"verticalLayout_35")
         self.sb_rooms = QSpinBox(self.frame_20)
         self.sb_rooms.setObjectName(u"sb_rooms")
+        self.sb_rooms.setMinimumSize(QSize(0, 30))
+        self.sb_rooms.setFont(font2)
+        self.sb_rooms.setStyleSheet(u"QComboBox {\n"
+"  background-color: #fbeee0;\n"
+"  border: 2px solid #422800;\n"
+"  border-radius: 5px;\n"
+"  color: #422800;\n"
+"}\n"
+"")
+        self.sb_rooms.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
         self.sb_rooms.setMinimum(1)
         self.sb_rooms.setMaximum(5)
 
@@ -184,6 +208,16 @@ class Ui_MainWindow(object):
         self.verticalLayout_37.setObjectName(u"verticalLayout_37")
         self.sb_floor = QSpinBox(self.frame_22)
         self.sb_floor.setObjectName(u"sb_floor")
+        self.sb_floor.setMinimumSize(QSize(0, 30))
+        self.sb_floor.setFont(font2)
+        self.sb_floor.setStyleSheet(u"QComboBox {\n"
+"  background-color: #fbeee0;\n"
+"  border: 2px solid #422800;\n"
+"  border-radius: 5px;\n"
+"  color: #422800;\n"
+"}\n"
+"")
+        self.sb_floor.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
         self.sb_floor.setMaximum(11)
 
         self.verticalLayout_37.addWidget(self.sb_floor)
@@ -224,6 +258,16 @@ class Ui_MainWindow(object):
         self.verticalLayout_36.setObjectName(u"verticalLayout_36")
         self.sb_year = QSpinBox(self.frame_24)
         self.sb_year.setObjectName(u"sb_year")
+        self.sb_year.setMinimumSize(QSize(0, 30))
+        self.sb_year.setFont(font2)
+        self.sb_year.setStyleSheet(u"QComboBox {\n"
+"  background-color: #fbeee0;\n"
+"  border: 2px solid #422800;\n"
+"  border-radius: 5px;\n"
+"  color: #422800;\n"
+"}\n"
+"")
+        self.sb_year.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
         self.sb_year.setMinimum(1000)
         self.sb_year.setMaximum(2024)
         self.sb_year.setValue(2024)
@@ -632,10 +676,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_17.setObjectName(u"verticalLayout_17")
         self.lb_prediction = QLabel(self.frame_15)
         self.lb_prediction.setObjectName(u"lb_prediction")
-        font2 = QFont()
-        font2.setPointSize(24)
-        font2.setBold(True)
-        self.lb_prediction.setFont(font2)
+        font3 = QFont()
+        font3.setFamilies([u"Rockwell"])
+        font3.setPointSize(24)
+        font3.setBold(True)
+        self.lb_prediction.setFont(font3)
         self.lb_prediction.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_17.addWidget(self.lb_prediction)
@@ -650,25 +695,49 @@ class Ui_MainWindow(object):
         self.tail.setObjectName(u"tail")
         self.tail.setStyleSheet(u"#tail {\n"
 " background-color: rgba(200, 200, 200, 180);\n"
+" \n"
+" background-color: rgba(239, 234, 178, 180);\n"
 "}")
         self.tail.setFrameShape(QFrame.NoFrame)
         self.tail.setFrameShadow(QFrame.Raised)
         self.horizontalLayout = QHBoxLayout(self.tail)
         self.horizontalLayout.setSpacing(20)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.horizontalLayout.setContentsMargins(30, 0, 30, 0)
+        self.horizontalLayout.setContentsMargins(80, 0, 80, 0)
         self.bt_calculate = QPushButton(self.tail)
         self.bt_calculate.setObjectName(u"bt_calculate")
-        font3 = QFont()
-        font3.setPointSize(12)
-        font3.setBold(True)
-        self.bt_calculate.setFont(font3)
+        self.bt_calculate.setMinimumSize(QSize(0, 50))
+        font4 = QFont()
+        font4.setPointSize(12)
+        font4.setBold(True)
+        self.bt_calculate.setFont(font4)
+        self.bt_calculate.setStyleSheet(u"QPushButton {\n"
+"  background-color: #fbeee0;\n"
+"  border: 2px solid #422800;\n"
+"  border-radius: 10px;\n"
+"  color: #422800;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"  background-color: #fff;\n"
+"}")
 
         self.horizontalLayout.addWidget(self.bt_calculate)
 
         self.bt_reset = QPushButton(self.tail)
         self.bt_reset.setObjectName(u"bt_reset")
-        self.bt_reset.setFont(font3)
+        self.bt_reset.setMinimumSize(QSize(0, 50))
+        self.bt_reset.setFont(font4)
+        self.bt_reset.setStyleSheet(u"QPushButton {\n"
+"  background-color: #fbeee0;\n"
+"  border: 2px solid #422800;\n"
+"  border-radius: 10px;\n"
+"  color: #422800;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"  background-color: #fff;\n"
+"}")
 
         self.horizontalLayout.addWidget(self.bt_reset)
 

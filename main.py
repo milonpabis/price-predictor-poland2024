@@ -1,4 +1,4 @@
-from gui import GUI, QApplication
+from assets.gui import GUI, QApplication
 
 # MODEL PREDICTS THE PRICE OF A FLAT 20m2 - 80m2 IN POLAND
 

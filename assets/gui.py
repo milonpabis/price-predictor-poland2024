@@ -1,37 +1,48 @@
-from UI.MainWindow import Ui_MainWindow
-from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton
+from assets.UI.MainWindow import Ui_MainWindow
+from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QGraphicsDropShadowEffect
 from PySide6.QtGui import QIcon
 from functools import partial
 import numpy as np
 import joblib
 from babel.numbers import format_currency
 
+from assets.static.shadows import *
+
 class GUI(QMainWindow, Ui_MainWindow):
 
-    model = joblib.load("../models//rf_79k.joblib")
+    model = joblib.load("models//rf_79k.joblib")
+    shadow = None 
 
     def __init__(self):
         super().__init__()
         self.setupUi(self)
         self.buttons = [self.bt_balcony, self.bt_garden, self.bt_garage, self.bt_lift, self.bt_terrace, self.bt_city, self.bt_ownership, self.bt_status]
-        self.YES_ICON = QIcon("images/yes.png")
-        self.NO_ICON = QIcon("images/no.png")
+        self.YES_ICON = QIcon("assets/images/yes.png")
+        self.NO_ICON = QIcon("assets/images/no.png")
 
         self.bt_calculate.clicked.connect(self.predict)
         self.bt_reset.clicked.connect(self.reset)
 
+
         self.setWindowTitle("Flat Price Prediction - Poland 2024")
-        self.setWindowIcon(QIcon("images/house.jpg"))
+        self.setWindowIcon(QIcon("assets/images/house.jpg"))
         self.lb_prediction.setText("")
         self.setup_buttons()
 
 
     def setup_buttons(self) -> None:
+
+        def setup_style():
+            self.bt_calculate.setGraphicsEffect(SHADOW_CALC)
+            self.bt_reset.setGraphicsEffect(SHADOW_RESET)
         
-        for b in self.buttons:
-            b.setIcon(QIcon("images/no.png"))
+        for idx, b in enumerate(self.buttons):
+            b.setIcon(QIcon("assets/images/no.png"))
             b.setStyleSheet("border-radius: 2px;")
+            b.setGraphicsEffect(SHADOWS_ICONS[idx])
             b.clicked.connect(partial(self.change_icon, b))
+            
+        setup_style()
 
 
     def change_icon(self, button: QPushButton) -> None:
