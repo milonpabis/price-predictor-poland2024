@@ -241,6 +241,12 @@ border: 1px solid black;
                      <property name="alignment">
                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                      </property>
+                     <property name="minimum">
+                      <number>15</number>
+                     </property>
+                     <property name="maximum">
+                      <number>100</number>
+                     </property>
                     </widget>
                    </item>
                   </layout>
@@ -312,6 +318,12 @@ border: 1px solid black;
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                     </property>
+                     <property name="minimum">
+                      <number>1</number>
+                     </property>
+                     <property name="maximum">
+                      <number>4</number>
                      </property>
                     </widget>
                    </item>
@@ -385,6 +397,9 @@ border: 1px solid black;
                      <property name="alignment">
                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                      </property>
+                     <property name="maximum">
+                      <number>10</number>
+                     </property>
                     </widget>
                    </item>
                   </layout>
@@ -456,6 +471,15 @@ border: 1px solid black;
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                     </property>
+                     <property name="minimum">
+                      <number>1851</number>
+                     </property>
+                     <property name="maximum">
+                      <number>2024</number>
+                     </property>
+                     <property name="value">
+                      <number>2024</number>
                      </property>
                     </widget>
                    </item>
@@ -1232,7 +1256,7 @@ border: 1px solid black;
                    </font>
                   </property>
                   <property name="text">
-                   <string>100.000PLN - 180.000PLN</string>
+                   <string/>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -1528,11 +1552,17 @@ border: 1px solid black;</string>
                 <string notr="true">border-radius: 10px;
 border: 2px solid #422800;</string>
                </property>
+               <property name="text">
+                <string/>
+               </property>
                <property name="frame">
                 <bool>false</bool>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
+               </property>
+               <property name="placeholderText">
+                <string>ex. Krakow, Main Square</string>
                </property>
               </widget>
              </item>

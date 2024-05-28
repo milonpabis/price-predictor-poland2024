@@ -1,6 +1,7 @@
 from assets.UI.MainWindow import Ui_MainWindow
 from assets.UI.EntryForm import Ui_Form
 from assets.UI.MainWindowKrk import Ui_MainWindow as Ui_MainWindowKrk
+from assets.static.shadows import *
 from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QDialog
 from PySide6.QtGui import QIcon, QPixmap, QPainter, QPen, QColor, QPolygon
 from PySide6.QtCore import QPoint
@@ -9,7 +10,9 @@ import numpy as np
 import joblib
 from babel.numbers import format_currency
 
-from assets.static.shadows import *
+from assets.geocodingapi import GeocodingAPI
+
+
 
 
 class PolandPrediction(QMainWindow, Ui_MainWindow):
@@ -134,15 +137,13 @@ class KrakowPrediction(QMainWindow, Ui_MainWindowKrk):
         super().__init__()
         self.setupUi(self)
 
+        # initializing the geocoding API
+        self.geocoding = GeocodingAPI()
+
         self.YES_ICON = QIcon("assets/images/yes.png")
         self.NO_ICON = QIcon("assets/images/no.png")
         self.GB_ICON = QIcon("assets/images/goback.webp")
         self.pixmap = QPixmap("assets/images/krk1.JPG")
-
-
-
-        self.latitude = 50.06143
-        self.longitude = 19.93658
 
         self.buttons = [self.bt_balcony, self.bt_garden, self.bt_garage, self.bt_lift,
                          self.bt_terrace, self.bt_ownership, self.bt_status]
@@ -162,6 +163,8 @@ class KrakowPrediction(QMainWindow, Ui_MainWindowKrk):
         self.setWindowIcon(QIcon("assets/images/house.jpg"))
 
         # setting default values
+        self.latitude = 50.06143
+        self.longitude = 19.93658
         self.l_map.setPixmap(self.pixmap)
         self.setup_buttons()
 
@@ -169,11 +172,11 @@ class KrakowPrediction(QMainWindow, Ui_MainWindowKrk):
 
     def predict(self) -> None: # uses the model to generate a prediction
         """
-        MAE of the model = 79k
+        MAE of the model = 55K
         """
         prediction = self.model.predict(self.create_vector())[0]
-        lower_bound = format_currency(prediction - 79000, "PLN", locale="pl_PL")
-        upper_bound = format_currency(prediction + 79000, "PLN", locale="pl_PL")
+        lower_bound = format_currency(prediction - 55000, "PLN", locale="pl_PL")
+        upper_bound = format_currency(prediction + 55000, "PLN", locale="pl_PL")
         self.l_prediction.setText(f"{lower_bound} - {upper_bound}")
 
 
@@ -201,9 +204,12 @@ class KrakowPrediction(QMainWindow, Ui_MainWindowKrk):
     
 
     def load_location(self) -> None:            # loads the location of the building
-        if self.le_address.text() == "Krakow, Zielonki":
-            self.longitude = 19.921007 
-            self.latitude = 50.118023
+        lat, long = self.geocoding.get_location(self.le_address.text())
+        if lat is not None and \
+            (lat > self.BORDER_V[0] and lat < self.BORDER_V[1]) and\
+              (long > self.BORDER_H[0] and long < self.BORDER_H[1]):
+            self.latitude = lat
+            self.longitude = long
 
         
 
@@ -224,7 +230,6 @@ class KrakowPrediction(QMainWindow, Ui_MainWindowKrk):
                                                                 self.BORDER_V, self.BORDER_H,
                                                                   (self.pixmap.width(), self.pixmap.height()))
         self.draw_point_on_map(x, y)
-        print(self.latitude, self.longitude)
 
 
 
@@ -233,7 +238,7 @@ class KrakowPrediction(QMainWindow, Ui_MainWindowKrk):
         pixmap = QPixmap("assets/images/krk1.JPG")
         painter.begin(pixmap)
         painter.setPen(QPen(QColor(255, 0, 0), 5))
-        triangle_size = 10  # size of the triangle
+        triangle_size = 10                          # size of the triangle
         triangle = QPolygon([QPoint(x, y),
                               QPoint(x - triangle_size, y - triangle_size),
                                QPoint(x + triangle_size, y - triangle_size)])
@@ -243,17 +248,45 @@ class KrakowPrediction(QMainWindow, Ui_MainWindowKrk):
         self.l_map.setPixmap(pixmap)
 
 
-    def coords_to_latlong(self, x: int, y: int, lat_edges: tuple, long_edges: tuple, coords_shape: tuple) -> tuple:  # converts the coordinates of the map to latitude and longitude
+    def coords_to_latlong(self, x: int, y: int, lat_edges: tuple, long_edges: tuple, coords_shape: tuple) -> tuple:
+        """
+        Converts the coordinates of the map to latitude and longitude.
+
+        Params:
+            x (int): The x-coordinate of the point on the map.
+            y (int): The y-coordinate of the point on the map.
+            lat_edges (tuple): A tuple containing the minimum and maximum latitude values of the map.
+            long_edges (tuple): A tuple containing the minimum and maximum longitude values of the map.
+            coords_shape (tuple): A tuple containing the shape (width, height) of the map coordinates.
+
+        Returns:
+            tuple: A tuple containing the longitude and latitude values corresponding to the given coordinates.
+        """
+
         lat_range = lat_edges[1] - lat_edges[0]
         long_range = long_edges[1] - long_edges[0]
 
         longitude = long_edges[0] + x/coords_shape[0] * long_range
         latitude = lat_edges[0] + (1 - y/coords_shape[1]) * lat_range
-        
+
         return longitude, latitude
     
 
-    def latlong_to_coords(self, latitude: float, longitude: float, lat_edges: tuple, long_edges: tuple, coords_shape: tuple) -> tuple:  # converts the latitude and longitude to the coordinates of the map
+    def latlong_to_coords(self, latitude: float, longitude: float, lat_edges: tuple, long_edges: tuple, coords_shape: tuple) -> tuple:
+        """
+        Converts the latitude and longitude to the coordinates of the map.
+
+        Parameters:
+        latitude (float): The latitude value of the location.
+        longitude (float): The longitude value of the location.
+        lat_edges (tuple): A tuple containing the minimum and maximum latitude values of the map.
+        long_edges (tuple): A tuple containing the minimum and maximum longitude values of the map.
+        coords_shape (tuple): A tuple containing the shape (width, height) of the map coordinates.
+
+        Returns:
+        tuple: A tuple containing the x and y coordinates of the location on the map.
+        """
+        
         lat_range = lat_edges[1] - lat_edges[0]
         long_range = long_edges[1] - long_edges[0]
 
@@ -263,7 +296,7 @@ class KrakowPrediction(QMainWindow, Ui_MainWindowKrk):
         return x_coord, y_coord
 
 
-
+    # --- BUTTONS AND ACTIONS ---
 
     def go_back(self) -> None:
         self.close()

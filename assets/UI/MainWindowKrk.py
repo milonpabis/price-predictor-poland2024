@@ -126,6 +126,8 @@ class Ui_MainWindow(object):
         font2.setPointSize(11)
         self.sb_area.setFont(font2)
         self.sb_area.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.sb_area.setMinimum(15)
+        self.sb_area.setMaximum(100)
 
         self.verticalLayout_26.addWidget(self.sb_area)
 
@@ -168,6 +170,8 @@ class Ui_MainWindow(object):
         self.sb_rooms.setMinimumSize(QSize(0, 30))
         self.sb_rooms.setFont(font2)
         self.sb_rooms.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.sb_rooms.setMinimum(1)
+        self.sb_rooms.setMaximum(4)
 
         self.verticalLayout_27.addWidget(self.sb_rooms)
 
@@ -210,6 +214,7 @@ class Ui_MainWindow(object):
         self.sb_floor.setMinimumSize(QSize(0, 30))
         self.sb_floor.setFont(font2)
         self.sb_floor.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.sb_floor.setMaximum(10)
 
         self.verticalLayout_28.addWidget(self.sb_floor)
 
@@ -252,6 +257,9 @@ class Ui_MainWindow(object):
         self.sb_year.setMinimumSize(QSize(0, 30))
         self.sb_year.setFont(font2)
         self.sb_year.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.sb_year.setMinimum(1851)
+        self.sb_year.setMaximum(2024)
+        self.sb_year.setValue(2024)
 
         self.verticalLayout_29.addWidget(self.sb_year)
 
@@ -864,12 +872,14 @@ class Ui_MainWindow(object):
         self.bt_garage.setText("")
         self.label_12.setText(QCoreApplication.translate("MainWindow", u"Lift?", None))
         self.bt_lift.setText("")
-        self.l_prediction.setText(QCoreApplication.translate("MainWindow", u"100.000PLN - 180.000PLN", None))
+        self.l_prediction.setText("")
         self.bt_goback.setText("")
         self.bt_calculate.setText(QCoreApplication.translate("MainWindow", u"Calculate", None))
         self.bt_reset.setText(QCoreApplication.translate("MainWindow", u"Reset", None))
         self.l_map.setText("")
         self.label_13.setText(QCoreApplication.translate("MainWindow", u"Enter your address", None))
+        self.le_address.setText("")
+        self.le_address.setPlaceholderText(QCoreApplication.translate("MainWindow", u"ex. Krakow, Main Square", None))
         self.bt_accept.setText(QCoreApplication.translate("MainWindow", u"Accept", None))
     # retranslateUi
 
