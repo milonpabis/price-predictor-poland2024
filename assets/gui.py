@@ -2,7 +2,7 @@ from assets.UI.MainWindow import Ui_MainWindow
 from assets.UI.EntryForm import Ui_Form
 from assets.UI.MainWindowKrk import Ui_MainWindow as Ui_MainWindowKrk
 from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QDialog
-from PySide6.QtGui import QIcon, QPixmap, QPainter, QPen, QColor
+from PySide6.QtGui import QIcon, QPixmap, QPainter, QPen, QColor, QPolygon
 from PySide6.QtCore import QPoint
 from functools import partial
 import numpy as np
@@ -126,6 +126,9 @@ class KrakowPrediction(QMainWindow, Ui_MainWindowKrk):
     """
 
     model = joblib.load("models//krk_55k.joblib")
+    BORDER_V = (49.9417, 50.1497)   # vertical borders of Krakow pixmap
+    BORDER_H = (19.7777, 20.2423)   # horizontal borders of Krakow pixmap
+
 
     def __init__(self):
         super().__init__()
@@ -136,10 +139,13 @@ class KrakowPrediction(QMainWindow, Ui_MainWindowKrk):
         self.GB_ICON = QIcon("assets/images/goback.webp")
         self.pixmap = QPixmap("assets/images/krk1.JPG")
 
+
+
         self.latitude = 50.06143
         self.longitude = 19.93658
 
-        self.buttons = [self.bt_balcony, self.bt_garden, self.bt_garage, self.bt_lift, self.bt_terrace, self.bt_ownership, self.bt_status]
+        self.buttons = [self.bt_balcony, self.bt_garden, self.bt_garage, self.bt_lift,
+                         self.bt_terrace, self.bt_ownership, self.bt_status]
 
 
         # connecting buttons to functions
@@ -147,6 +153,8 @@ class KrakowPrediction(QMainWindow, Ui_MainWindowKrk):
         self.bt_accept.clicked.connect(self.load_location)
         self.bt_calculate.clicked.connect(self.predict)
         self.bt_reset.clicked.connect(self.reset)
+
+        self.l_map.mousePressEvent = self.load_location_clicked
 
 
         # setting window properties
@@ -174,18 +182,18 @@ class KrakowPrediction(QMainWindow, Ui_MainWindowKrk):
         AREA OWNERSHIP ROOMS STATUS FLOOR BALCONY TERRACE GARDEN GARAGE LIFT LONGITUDE LATITUDE AGE
         """
         return np.array([self.sb_area.value(),
-                         self.bt_ownership.isChecked(),
-                         self.sb_rooms.value(),
-                         self.bt_status.isChecked() + 1,
-                         self.sb_floor.value(),
-                         self.bt_balcony.isChecked(),
-                         self.bt_terrace.isChecked(),
-                         self.bt_garden.isChecked(),
-                         self.bt_garage.isChecked(),
-                         self.bt_lift.isChecked(),
-                         self.longitude,
-                         self.latitude,
-                         self.convert_age(self.sb_year.value())]).reshape(1, -1)
+                          self.bt_ownership.isChecked(),
+                           self.sb_rooms.value(),
+                            self.bt_status.isChecked() + 1,
+                             self.sb_floor.value(),
+                              self.bt_balcony.isChecked(),
+                               self.bt_terrace.isChecked(),
+                                self.bt_garden.isChecked(),
+                                 self.bt_garage.isChecked(),
+                                  self.bt_lift.isChecked(),
+                                   self.longitude,
+                                    self.latitude,
+                                     self.convert_age(self.sb_year.value())]).reshape(1, -1)
     
 
     def convert_age(self, year: int) -> int:  # converts the year of the building to its age
@@ -193,24 +201,67 @@ class KrakowPrediction(QMainWindow, Ui_MainWindowKrk):
     
 
     def load_location(self) -> None:            # loads the location of the building
-        BORDER_V = [49.9417, 50.1497]   # vertical borders of Krakow pixmap
-        BORDER_H = [19.7777, 20.2423]   # horizontal borders of Krakow pixmap
-        V_RANGE = BORDER_V[1] - BORDER_V[0]
-        H_RANGE = BORDER_H[1] - BORDER_H[0]
-
         if self.le_address.text() == "Krakow, Zielonki":
             self.longitude = 19.921007 
             self.latitude = 50.118023
 
-        x_coord = (self.longitude-BORDER_H[0])/H_RANGE * self.pixmap.size().width()
-        y_coord = (1-(self.latitude-BORDER_V[0])/V_RANGE) * self.pixmap.size().height()
+        
 
+        x, y = self.latlong_to_coords(self.latitude, self.longitude,
+                                       self.BORDER_V, self.BORDER_H,
+                                         (self.pixmap.width(), self.pixmap.height()))
+        self.draw_point_on_map(x, y)
+        print(self.latitude, self.longitude)
+
+
+
+    def load_location_clicked(self, event) -> None:  # loads the location of the building after clicking on the map
+        x, y = event.pos().x(), event.pos().y()
+        x = x / self.l_map.width() * self.pixmap.width()    # mapping to the Pixmap real size
+        y = y / self.l_map.height() * self.pixmap.height()
+
+        self.longitude, self.latitude = self.coords_to_latlong(x, y,
+                                                                self.BORDER_V, self.BORDER_H,
+                                                                  (self.pixmap.width(), self.pixmap.height()))
+        self.draw_point_on_map(x, y)
+        print(self.latitude, self.longitude)
+
+
+
+    def draw_point_on_map(self, x: int, y: int) -> None:  # draws a point on the map
         painter = QPainter()
-        painter.begin(self.pixmap)
+        pixmap = QPixmap("assets/images/krk1.JPG")
+        painter.begin(pixmap)
         painter.setPen(QPen(QColor(255, 0, 0), 5))
-        painter.drawPoint(QPoint(x_coord, y_coord))
+        triangle_size = 10  # size of the triangle
+        triangle = QPolygon([QPoint(x, y),
+                              QPoint(x - triangle_size, y - triangle_size),
+                               QPoint(x + triangle_size, y - triangle_size)])
+        
+        painter.drawPolygon(triangle)
         painter.end()
-        self.l_map.setPixmap(self.pixmap)
+        self.l_map.setPixmap(pixmap)
+
+
+    def coords_to_latlong(self, x: int, y: int, lat_edges: tuple, long_edges: tuple, coords_shape: tuple) -> tuple:  # converts the coordinates of the map to latitude and longitude
+        lat_range = lat_edges[1] - lat_edges[0]
+        long_range = long_edges[1] - long_edges[0]
+
+        longitude = long_edges[0] + x/coords_shape[0] * long_range
+        latitude = lat_edges[0] + (1 - y/coords_shape[1]) * lat_range
+        
+        return longitude, latitude
+    
+
+    def latlong_to_coords(self, latitude: float, longitude: float, lat_edges: tuple, long_edges: tuple, coords_shape: tuple) -> tuple:  # converts the latitude and longitude to the coordinates of the map
+        lat_range = lat_edges[1] - lat_edges[0]
+        long_range = long_edges[1] - long_edges[0]
+
+        x_coord = (longitude-long_edges[0])/long_range * coords_shape[0]
+        y_coord = (1-(latitude-lat_edges[0])/lat_range) * coords_shape[1]
+
+        return x_coord, y_coord
+
 
 
 
@@ -255,6 +306,10 @@ class KrakowPrediction(QMainWindow, Ui_MainWindowKrk):
         self.sb_floor.setValue(0)
         self.sb_year.setValue(2024)
         self.l_prediction.setText("")
+        self.latitude = 50.06143
+        self.longitude = 19.93658
+        self.pixmap = QPixmap("assets/images/krk1.JPG")
+        self.l_map.setPixmap(self.pixmap)
 
         for b in self.buttons:
             b.setIcon(self.NO_ICON)
