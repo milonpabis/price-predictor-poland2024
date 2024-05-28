@@ -23,8 +23,8 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(872, 700)
-        MainWindow.setMinimumSize(QSize(650, 700))
+        MainWindow.resize(1200, 700)
+        MainWindow.setMinimumSize(QSize(1200, 700))
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.horizontalLayout_13 = QHBoxLayout(self.centralwidget)
@@ -716,8 +716,12 @@ class Ui_MainWindow(object):
 
         self.frame_44 = QFrame(self.centralwidget)
         self.frame_44.setObjectName(u"frame_44")
-        self.frame_44.setMinimumSize(QSize(200, 0))
-        self.frame_44.setMaximumSize(QSize(250, 16777215))
+        self.frame_44.setMinimumSize(QSize(550, 0))
+        self.frame_44.setMaximumSize(QSize(550, 16777215))
+        self.frame_44.setStyleSheet(u"QFrame#frame_44 {\n"
+"background-color: rgba(239, 234, 178, 180);\n"
+"border: 1px solid black;\n"
+"}")
         self.frame_44.setFrameShape(QFrame.NoFrame)
         self.frame_44.setFrameShadow(QFrame.Raised)
         self.verticalLayout_32 = QVBoxLayout(self.frame_44)
@@ -732,6 +736,12 @@ class Ui_MainWindow(object):
         self.verticalLayout_33.setObjectName(u"verticalLayout_33")
         self.l_map = QLabel(self.frame_43)
         self.l_map.setObjectName(u"l_map")
+        self.l_map.setMinimumSize(QSize(530, 371))
+        self.l_map.setMaximumSize(QSize(530, 371))
+        self.l_map.setStyleSheet(u"background-color: white;\n"
+"border: 1px solid black;")
+        self.l_map.setPixmap(QPixmap(u"../../krk1.JPG"))
+        self.l_map.setScaledContents(True)
 
         self.verticalLayout_33.addWidget(self.l_map)
 
@@ -744,15 +754,81 @@ class Ui_MainWindow(object):
         self.frame_46.setFrameShadow(QFrame.Raised)
         self.verticalLayout_34 = QVBoxLayout(self.frame_46)
         self.verticalLayout_34.setObjectName(u"verticalLayout_34")
-        self.l_address = QLabel(self.frame_46)
-        self.l_address.setObjectName(u"l_address")
+        self.verticalLayout_34.setContentsMargins(-1, -1, -1, 120)
+        self.frame_47 = QFrame(self.frame_46)
+        self.frame_47.setObjectName(u"frame_47")
+        self.frame_47.setFrameShape(QFrame.NoFrame)
+        self.frame_47.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_37 = QVBoxLayout(self.frame_47)
+        self.verticalLayout_37.setObjectName(u"verticalLayout_37")
+        self.label_13 = QLabel(self.frame_47)
+        self.label_13.setObjectName(u"label_13")
+        font5 = QFont()
+        font5.setFamilies([u"Rockwell"])
+        font5.setPointSize(12)
+        font5.setBold(True)
+        self.label_13.setFont(font5)
+        self.label_13.setAlignment(Qt.AlignCenter)
 
-        self.verticalLayout_34.addWidget(self.l_address)
+        self.verticalLayout_37.addWidget(self.label_13)
 
-        self.le_address = QLineEdit(self.frame_46)
+
+        self.verticalLayout_34.addWidget(self.frame_47)
+
+        self.frame_49 = QFrame(self.frame_46)
+        self.frame_49.setObjectName(u"frame_49")
+        self.frame_49.setFrameShape(QFrame.NoFrame)
+        self.frame_49.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_14 = QHBoxLayout(self.frame_49)
+        self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
+        self.le_address = QLineEdit(self.frame_49)
         self.le_address.setObjectName(u"le_address")
+        self.le_address.setMinimumSize(QSize(0, 35))
+        self.le_address.setMaximumSize(QSize(300, 16777215))
+        font6 = QFont()
+        font6.setFamilies([u"Rockwell"])
+        font6.setPointSize(12)
+        self.le_address.setFont(font6)
+        self.le_address.setStyleSheet(u"border-radius: 10px;\n"
+"border: 2px solid #422800;")
+        self.le_address.setFrame(False)
+        self.le_address.setAlignment(Qt.AlignCenter)
 
-        self.verticalLayout_34.addWidget(self.le_address)
+        self.horizontalLayout_14.addWidget(self.le_address)
+
+
+        self.verticalLayout_34.addWidget(self.frame_49)
+
+        self.frame_48 = QFrame(self.frame_46)
+        self.frame_48.setObjectName(u"frame_48")
+        self.frame_48.setFrameShape(QFrame.NoFrame)
+        self.frame_48.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_15 = QHBoxLayout(self.frame_48)
+        self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
+        self.bt_accept = QPushButton(self.frame_48)
+        self.bt_accept.setObjectName(u"bt_accept")
+        self.bt_accept.setMinimumSize(QSize(0, 40))
+        self.bt_accept.setMaximumSize(QSize(100, 16777215))
+        font7 = QFont()
+        font7.setPointSize(10)
+        font7.setBold(True)
+        self.bt_accept.setFont(font7)
+        self.bt_accept.setCursor(QCursor(Qt.PointingHandCursor))
+        self.bt_accept.setStyleSheet(u"QPushButton {\n"
+"  background-color: #fbeee0;\n"
+"  border: 2px solid #422800;\n"
+"  border-radius: 10px;\n"
+"  color: #422800;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"  background-color: #fff;\n"
+"}")
+
+        self.horizontalLayout_15.addWidget(self.bt_accept)
+
+
+        self.verticalLayout_34.addWidget(self.frame_48)
 
 
         self.verticalLayout_32.addWidget(self.frame_46)
@@ -792,7 +868,8 @@ class Ui_MainWindow(object):
         self.bt_goback.setText("")
         self.bt_calculate.setText(QCoreApplication.translate("MainWindow", u"Calculate", None))
         self.bt_reset.setText(QCoreApplication.translate("MainWindow", u"Reset", None))
-        self.l_map.setText(QCoreApplication.translate("MainWindow", u"map", None))
-        self.l_address.setText(QCoreApplication.translate("MainWindow", u"Address", None))
+        self.l_map.setText("")
+        self.label_13.setText(QCoreApplication.translate("MainWindow", u"Enter your address", None))
+        self.bt_accept.setText(QCoreApplication.translate("MainWindow", u"Accept", None))
     # retranslateUi
 

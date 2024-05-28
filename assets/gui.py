@@ -2,13 +2,15 @@ from assets.UI.MainWindow import Ui_MainWindow
 from assets.UI.EntryForm import Ui_Form
 from assets.UI.MainWindowKrk import Ui_MainWindow as Ui_MainWindowKrk
 from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QDialog
-from PySide6.QtGui import QIcon
+from PySide6.QtGui import QIcon, QPixmap, QPainter, QPen, QColor
+from PySide6.QtCore import QPoint
 from functools import partial
 import numpy as np
 import joblib
 from babel.numbers import format_currency
 
 from assets.static.shadows import *
+
 
 class PolandPrediction(QMainWindow, Ui_MainWindow):
     """
@@ -23,10 +25,11 @@ class PolandPrediction(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
         self.buttons = [self.bt_balcony, self.bt_garden, self.bt_garage, self.bt_lift, self.bt_terrace, self.bt_city, self.bt_ownership, self.bt_status]
+        
         self.YES_ICON = QIcon("assets/images/yes.png")
         self.NO_ICON = QIcon("assets/images/no.png")
         self.GB_ICON = QIcon("assets/images/goback.webp")
-        
+
         # connecting buttons to functions
         self.bt_calculate.clicked.connect(self.predict)
         self.bt_reset.clicked.connect(self.reset)
@@ -86,6 +89,7 @@ class PolandPrediction(QMainWindow, Ui_MainWindow):
                          self.bt_lift.isChecked(), 
                          self.bt_city.isChecked()]).reshape(1, -1)
     
+
     def predict(self) -> None: # uses the model to generate a prediction
         """
         MAE of the model = 79k
@@ -114,22 +118,100 @@ class PolandPrediction(QMainWindow, Ui_MainWindow):
         self.window.show()
 
 
-from PySide6.QtWidgets import QVBoxLayout, QLabel
 
 class KrakowPrediction(QMainWindow, Ui_MainWindowKrk):
+    """
+    Main window of the application, with predictions for Krakow city only,
+    user needs to specify the exact location of the building in Krakow.
+    """
+
+    model = joblib.load("models//krk_55k.joblib")
 
     def __init__(self):
         super().__init__()
         self.setupUi(self)
 
+        self.YES_ICON = QIcon("assets/images/yes.png")
+        self.NO_ICON = QIcon("assets/images/no.png")
+        self.GB_ICON = QIcon("assets/images/goback.webp")
+        self.pixmap = QPixmap("assets/images/krk1.JPG")
+
+        self.latitude = 50.06143
+        self.longitude = 19.93658
+
+        self.buttons = [self.bt_balcony, self.bt_garden, self.bt_garage, self.bt_lift, self.bt_terrace, self.bt_ownership, self.bt_status]
+
+
+        # connecting buttons to functions
         self.bt_goback.clicked.connect(self.go_back)
-
-
+        self.bt_accept.clicked.connect(self.load_location)
+        self.bt_calculate.clicked.connect(self.predict)
+        self.bt_reset.clicked.connect(self.reset)
 
 
         # setting window properties
         self.setWindowTitle("Flat Price Prediction - Krakow 2024")
         self.setWindowIcon(QIcon("assets/images/house.jpg"))
+
+        # setting default values
+        self.l_map.setPixmap(self.pixmap)
+        self.setup_buttons()
+
+
+
+    def predict(self) -> None: # uses the model to generate a prediction
+        """
+        MAE of the model = 79k
+        """
+        prediction = self.model.predict(self.create_vector())[0]
+        lower_bound = format_currency(prediction - 79000, "PLN", locale="pl_PL")
+        upper_bound = format_currency(prediction + 79000, "PLN", locale="pl_PL")
+        self.l_prediction.setText(f"{lower_bound} - {upper_bound}")
+
+
+    def create_vector(self) -> np.ndarray:  # creates a vector from the inputs that will be passed to the model
+        """
+        AREA OWNERSHIP ROOMS STATUS FLOOR BALCONY TERRACE GARDEN GARAGE LIFT LONGITUDE LATITUDE AGE
+        """
+        return np.array([self.sb_area.value(),
+                         self.bt_ownership.isChecked(),
+                         self.sb_rooms.value(),
+                         self.bt_status.isChecked() + 1,
+                         self.sb_floor.value(),
+                         self.bt_balcony.isChecked(),
+                         self.bt_terrace.isChecked(),
+                         self.bt_garden.isChecked(),
+                         self.bt_garage.isChecked(),
+                         self.bt_lift.isChecked(),
+                         self.longitude,
+                         self.latitude,
+                         self.convert_age(self.sb_year.value())]).reshape(1, -1)
+    
+
+    def convert_age(self, year: int) -> int:  # converts the year of the building to its age
+        return 2 if year > 2016 else 1 if year > 2000 else 0
+    
+
+    def load_location(self) -> None:            # loads the location of the building
+        BORDER_V = [49.9417, 50.1497]   # vertical borders of Krakow pixmap
+        BORDER_H = [19.7777, 20.2423]   # horizontal borders of Krakow pixmap
+        V_RANGE = BORDER_V[1] - BORDER_V[0]
+        H_RANGE = BORDER_H[1] - BORDER_H[0]
+
+        if self.le_address.text() == "Krakow, Zielonki":
+            self.longitude = 19.921007 
+            self.latitude = 50.118023
+
+        x_coord = (self.longitude-BORDER_H[0])/H_RANGE * self.pixmap.size().width()
+        y_coord = (1-(self.latitude-BORDER_V[0])/V_RANGE) * self.pixmap.size().height()
+
+        painter = QPainter()
+        painter.begin(self.pixmap)
+        painter.setPen(QPen(QColor(255, 0, 0), 5))
+        painter.drawPoint(QPoint(x_coord, y_coord))
+        painter.end()
+        self.l_map.setPixmap(self.pixmap)
+
 
 
     def go_back(self) -> None:
@@ -137,6 +219,46 @@ class KrakowPrediction(QMainWindow, Ui_MainWindowKrk):
         self.window = EntryForm()
         self.window.show()
 
+
+    def setup_buttons(self) -> None:    
+
+        def setup_style():  # adding shadows
+            self.bt_calculate.setGraphicsEffect(SHADOW_CALC1)
+            self.bt_reset.setGraphicsEffect(SHADOW_RESET1)
+            self.bt_goback.setGraphicsEffect(SHADOW_GOBACK1)
+            self.bt_accept.setGraphicsEffect(SHADOW_ACCEPT)
+            
+        # go back button
+        self.bt_goback.setIcon(self.GB_ICON)
+        self.bt_goback.setStyleSheet("border-radius: 2px;")
+        
+        # option buttons
+        for idx, b in enumerate(self.buttons):
+            b.setIcon(self.NO_ICON)
+            b.setStyleSheet("border-radius: 2px;")
+            b.setGraphicsEffect(SHADOWS_ICONS[idx])
+            b.clicked.connect(partial(self.change_icon, b))
+            
+        setup_style()
+
+
+    def change_icon(self, button: QPushButton) -> None:
+        if button.isChecked():
+            button.setIcon(self.YES_ICON)
+        else:
+            button.setIcon(self.NO_ICON)
+
+
+    def reset(self) -> None:    # resets the inputs and the prediction
+        self.sb_area.setValue(20)
+        self.sb_rooms.setValue(1)
+        self.sb_floor.setValue(0)
+        self.sb_year.setValue(2024)
+        self.l_prediction.setText("")
+
+        for b in self.buttons:
+            b.setIcon(self.NO_ICON)
+            b.setChecked(False)
 
 
 
