@@ -39,7 +39,7 @@ All the data, the models were trained on, had been scraped from otodom.pl websit
 - **Krakow**
 > MAE=55K PLN
 
-I used the Mean Average Error as the leading metric for this project, however the RMSE was incredibly high as well.
+I used the Mean Average Error as the leading metric for this project.
 
 
 
