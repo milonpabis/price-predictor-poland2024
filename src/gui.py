@@ -167,6 +167,7 @@ class KrakowPrediction(QMainWindow, Ui_MainWindowKrk):
         self.longitude = 19.93658
         self.l_map.setPixmap(self.pixmap)
         self.setup_buttons()
+        self.load_location()
 
 
 
@@ -204,12 +205,13 @@ class KrakowPrediction(QMainWindow, Ui_MainWindowKrk):
     
 
     def load_location(self) -> None:            # loads the location of the building
-        lat, long = self.geocoding.get_location(self.le_address.text())
-        if lat is not None and \
-            (lat > self.BORDER_V[0] and lat < self.BORDER_V[1]) and\
-              (long > self.BORDER_H[0] and long < self.BORDER_H[1]):
-            self.latitude = lat
-            self.longitude = long
+        if self.le_address.text() != "":
+            lat, long = self.geocoding.get_location(self.le_address.text())
+            if lat is not None and \
+                (lat > self.BORDER_V[0] and lat < self.BORDER_V[1]) and\
+                (long > self.BORDER_H[0] and long < self.BORDER_H[1]):
+                self.latitude = lat
+                self.longitude = long
 
         
 
@@ -237,11 +239,11 @@ class KrakowPrediction(QMainWindow, Ui_MainWindowKrk):
         painter = QPainter()
         pixmap = QPixmap("assets/images/krk1.JPG")
         painter.begin(pixmap)
-        painter.setPen(QPen(QColor(255, 0, 0), 5))
+        painter.setPen(QPen(QColor(255, 0, 0), 10))
         triangle_size = 10                          # size of the triangle
         triangle = QPolygon([QPoint(x, y),
-                              QPoint(x - triangle_size, y - triangle_size),
-                               QPoint(x + triangle_size, y - triangle_size)])
+                              QPoint(x - triangle_size, y + triangle_size),
+                               QPoint(x + triangle_size, y + triangle_size)])
         
         painter.drawPolygon(triangle)
         painter.end()
@@ -343,10 +345,13 @@ class KrakowPrediction(QMainWindow, Ui_MainWindowKrk):
         self.longitude = 19.93658
         self.pixmap = QPixmap("assets/images/krk1.JPG")
         self.l_map.setPixmap(self.pixmap)
+        self.le_address.setText("")
 
         for b in self.buttons:
             b.setIcon(self.NO_ICON)
             b.setChecked(False)
+
+        self.load_location()
 
 
 
