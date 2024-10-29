@@ -3,6 +3,7 @@ import asyncio
 import aiohttp
 from typing import List
 import itertools
+from tqdm.asyncio import tqdm
 
 HEADERS = {
   'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
@@ -21,6 +22,7 @@ HEADERS = {
 }
 
 ENDPOINT = "https://www.otodom.pl/pl/wyniki/sprzedaz/mieszkanie/cala-polska?viewType=listing&limit=72&page="
+MAIN_URI = "https://www.otodom.pl"
 
 async def fetch_urls_from_page(url: str) -> List[str]:
     async with aiohttp.ClientSession() as session:
@@ -28,18 +30,22 @@ async def fetch_urls_from_page(url: str) -> List[str]:
             html = await response.text()
             soup = BeautifulSoup(html, 'html.parser')
             urls = [a["href"] for a in soup.find_all("a") if "/pl/oferta" in a["href"] and a["href"].startswith("/pl")]
+            # print(len(urls))
             return urls
         
 
 async def fetch_all_urls(idx_range: List[int]) -> List[List[str]]:
-    urls = [ENDPOINT + str(i) for i in range(idx_range[0], idx_range[1])]
+    urls = [ENDPOINT + str(i) for i in range(idx_range[0], idx_range[1]+1)]
     tasks = [fetch_urls_from_page(url) for url in urls]
-    return await asyncio.gather(*tasks)
+    return await tqdm.gather(*tasks, desc="Fetching URLs", leave=False)
 
 
 if __name__ == "__main__":
-    urls = asyncio.run(fetch_all_urls([1, 5]))
+    urls = asyncio.run(fetch_all_urls([1, 3]))
     urls_flat = set(list(itertools.chain.from_iterable(urls)))
+    urls_full = list(map(lambda ur: MAIN_URI + ur, urls_flat))
+    
+
 
 
 

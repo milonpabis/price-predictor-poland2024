@@ -9,16 +9,14 @@ class Urls(Base):
     __tablename__ = "urls"
 
     id = Column(Integer, primary_key=True)
-    url = Column(String, nullable=False)
-
-    offer = relationship("Offer", back_populates="url")
+    url = Column(String, nullable=False, unique=True)
 
 
-class Offer(Base):
+class Offers(Base):
     __tablename__ = "offers"
 
     id = Column(Integer, primary_key=True)
-    url_id = Column(Integer, ForeignKey("urls.id"))
+    url_id = Column(Integer, ForeignKey("urls.id"), nullable=False, unique=True)
 
     offer_type = Column(String, nullable=False)
     price = Column(String, nullable=False)
@@ -39,7 +37,7 @@ class Offer(Base):
     lift = Column(String, nullable=True)
     city = Column(String, nullable=True)
 
-    url = relationship("Urls", back_populates="offers")
+    url = relationship("Urls", backref="offers")
 
 
 

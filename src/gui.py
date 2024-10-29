@@ -1,7 +1,7 @@
-from assets.UI.MainWindow import Ui_MainWindow
-from assets.UI.EntryForm import Ui_Form
-from assets.UI.MainWindowKrk import Ui_MainWindow as Ui_MainWindowKrk
-from assets.static.shadows import *
+from src.UI.MainWindow import Ui_MainWindow
+from src.UI.EntryForm import Ui_Form
+from src.UI.MainWindowKrk import Ui_MainWindow as Ui_MainWindowKrk
+from src.static.shadows import *
 from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QDialog
 from PySide6.QtGui import QIcon, QPixmap, QPainter, QPen, QColor, QPolygon
 from PySide6.QtCore import QPoint
@@ -10,7 +10,7 @@ import numpy as np
 import joblib
 from babel.numbers import format_currency
 
-from assets.geocodingapi import GeocodingAPI
+from src.geocodingapi import GeocodingAPI
 
 
 
