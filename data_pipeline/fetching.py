@@ -4,6 +4,8 @@ import aiohttp
 from typing import List
 import itertools
 from tqdm.asyncio import tqdm
+from datetime import datetime
+from parsing import parse_all_htmls, parse_all_test, cpu_count
 
 HEADERS = {
   'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
@@ -28,10 +30,10 @@ async def fetch_urls_from_page(url: str) -> List[str]:
     async with aiohttp.ClientSession() as session:
         async with session.get(url, headers=HEADERS) as response:
             html = await response.text()
-            soup = BeautifulSoup(html, 'html.parser')
-            urls = [a["href"] for a in soup.find_all("a") if "/pl/oferta" in a["href"] and a["href"].startswith("/pl")]
+            #soup = BeautifulSoup(html, 'html.parser')
+            #urls = [a["href"] for a in soup.find_all("a") if "/pl/oferta" in a["href"] and a["href"].startswith("/pl")]
             # print(len(urls))
-            return urls
+            return html
         
 
 async def fetch_all_urls(idx_range: List[int]) -> List[List[str]]:
@@ -41,10 +43,29 @@ async def fetch_all_urls(idx_range: List[int]) -> List[List[str]]:
 
 
 if __name__ == "__main__":
-    urls = asyncio.run(fetch_all_urls([1, 3]))
-    urls_flat = set(list(itertools.chain.from_iterable(urls)))
-    urls_full = list(map(lambda ur: MAIN_URI + ur, urls_flat))
-    
+    start = datetime.now()
+    urls = asyncio.run(fetch_all_urls([1, 100]))
+    # urls_flat = set(list(itertools.chain.from_iterable(urls)))
+    # urls_full = list(map(lambda ur: MAIN_URI + ur, urls_flat))
+    print(datetime.now() - start)
+    # for i in range(0, len(urls), 10):
+    #     soup = BeautifulSoup(urls[i], 'html.parser')
+    #     urlss = [a["href"] for a in soup.find_all("a") if "/pl/oferta" in a["href"] and a["href"].startswith("/pl")]
+    #     print(i, ":", len(urlss))
+    print(len(urls))
+    start = datetime.now()
+    urls_ = parse_all_htmls(urls)
+    print(type(urls_))
+    print(len(urls_))
+    print(urls_[0])
+    print(datetime.now() - start)
+
+    start = datetime.now()
+    urls__ = parse_all_test(urls)
+    print(len(urls__))
+    print(datetime.now() - start)
+
+        
 
 
 

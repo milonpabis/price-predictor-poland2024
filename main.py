@@ -1,7 +1,7 @@
 # from src.gui import QApplication, EntryForm
 
 from db.dbconnection import DBConnection
-from data_pipeline.utils import fetch_all_urls, MAIN_URI
+from data_pipeline.fetching import fetch_all_urls, MAIN_URI
 import asyncio
 import itertools
 from tqdm import tqdm
@@ -22,6 +22,7 @@ if __name__ == "__main__":
     # - collecting every record and then saving it to the database
     # - try to find a way to iterate only on new listings
     # - separate http request from parsing
+    # - parsing on separated threads
 
     db = DBConnection()
 
