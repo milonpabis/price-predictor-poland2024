@@ -1,16 +1,12 @@
 # from src.gui import QApplication, EntryForm
 
 from db.dbconnection import DBConnection
-from data_pipeline.fetching import fetch_all_urls, MAIN_URI
+from data_pipeline.fetching import fetch_all_htmls, MAIN_URI
 from data_pipeline.URLHandler import URLHandler
 import asyncio
 import itertools
 from tqdm import tqdm
 from datetime import datetime
-
-REQUESTS_BATCH = 100
-NUM_REQUESTS = 2500
-NUM_BATCHES = 2500 // REQUESTS_BATCH
 
 # MODEL PREDICTS THE PRICE OF A FLAT 20m2 - 80m2 IN POLAND
 
@@ -29,6 +25,6 @@ if __name__ == "__main__":
 
     db = DBConnection()
     url_handler = URLHandler(dbconnection=db)
-    url_handler.run([1601, 1700])
+    url_handler.run([1, 100], batch_size=400)
     db.close_session()
 
