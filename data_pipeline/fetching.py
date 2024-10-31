@@ -1,11 +1,8 @@
-from bs4 import BeautifulSoup
-import asyncio
 import aiohttp
 from typing import List
-import itertools
 from tqdm.asyncio import tqdm
-from datetime import datetime
-from parsing import parse_all_htmls, parse_all_test, cpu_count
+from utils import timelog
+
 
 HEADERS = {
   'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
@@ -30,40 +27,13 @@ async def fetch_urls_from_page(url: str) -> List[str]:
     async with aiohttp.ClientSession() as session:
         async with session.get(url, headers=HEADERS) as response:
             html = await response.text()
-            #soup = BeautifulSoup(html, 'html.parser')
-            #urls = [a["href"] for a in soup.find_all("a") if "/pl/oferta" in a["href"] and a["href"].startswith("/pl")]
-            # print(len(urls))
             return html
         
-
+@timelog("Fetching URLs")
 async def fetch_all_urls(idx_range: List[int]) -> List[List[str]]:
     urls = [ENDPOINT + str(i) for i in range(idx_range[0], idx_range[1]+1)]
     tasks = [fetch_urls_from_page(url) for url in urls]
     return await tqdm.gather(*tasks, desc="Fetching URLs", leave=False)
-
-
-if __name__ == "__main__":
-    start = datetime.now()
-    urls = asyncio.run(fetch_all_urls([1, 100]))
-    # urls_flat = set(list(itertools.chain.from_iterable(urls)))
-    # urls_full = list(map(lambda ur: MAIN_URI + ur, urls_flat))
-    print(datetime.now() - start)
-    # for i in range(0, len(urls), 10):
-    #     soup = BeautifulSoup(urls[i], 'html.parser')
-    #     urlss = [a["href"] for a in soup.find_all("a") if "/pl/oferta" in a["href"] and a["href"].startswith("/pl")]
-    #     print(i, ":", len(urlss))
-    print(len(urls))
-    start = datetime.now()
-    urls_ = parse_all_htmls(urls)
-    print(type(urls_))
-    print(len(urls_))
-    print(urls_[0])
-    print(datetime.now() - start)
-
-    start = datetime.now()
-    urls__ = parse_all_test(urls)
-    print(len(urls__))
-    print(datetime.now() - start)
 
         
 

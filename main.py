@@ -2,9 +2,11 @@
 
 from db.dbconnection import DBConnection
 from data_pipeline.fetching import fetch_all_urls, MAIN_URI
+from data_pipeline.URLHandler import URLHandler
 import asyncio
 import itertools
 from tqdm import tqdm
+from datetime import datetime
 
 REQUESTS_BATCH = 100
 NUM_REQUESTS = 2500
@@ -24,13 +26,9 @@ if __name__ == "__main__":
     # - separate http request from parsing
     # - parsing on separated threads
 
+
     db = DBConnection()
-
-    for i in tqdm(range(1, NUM_BATCHES+1)):
-        urls = asyncio.run(fetch_all_urls([((i-1)*REQUESTS_BATCH)+1, i*REQUESTS_BATCH]))
-        urls_flat = set(list(itertools.chain.from_iterable(urls)))
-        urls_full = list(map(lambda ur: MAIN_URI + ur, urls_flat))
-
-        db.add_urls(urls_full)
-    
+    url_handler = URLHandler(dbconnection=db)
+    url_handler.run([1601, 1700])
     db.close_session()
+
