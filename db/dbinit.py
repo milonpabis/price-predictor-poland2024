@@ -40,6 +40,14 @@ class Offers(Base):
     url = relationship("Urls", backref="offers")
 
 
+class Images(Base):
+    __tablename__ = "images"
+
+    id = Column(Integer, primary_key=True)
+    url_id = Column(Integer, ForeignKey("offers.id"), nullable=False)
+    url = Column(String, nullable=False)
+
+
 
 
 def create_db(name: str = "FlatsDB") -> None:

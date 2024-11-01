@@ -16,6 +16,12 @@ async def fetch_all_htmls(idx_range: List[int]) -> List[List[str]]:
     tasks = [fetch_html(url) for url in urls]
     return await tqdm.gather(*tasks, desc="Fetching HTMLs", leave=False)
 
+
+@timelog("Fetching HTMLs")
+async def fetch_all_htmls2(urls: List[str]) -> List[List[str]]:
+    tasks = [fetch_html(url) for url in urls]
+    return await tqdm.gather(*tasks, desc="Fetching HTMLs", leave=False)
+
         
 
 

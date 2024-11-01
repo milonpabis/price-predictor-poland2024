@@ -3,6 +3,8 @@
 from db.dbconnection import DBConnection
 from data_pipeline.fetching import fetch_all_htmls, MAIN_URI
 from data_pipeline.URLHandler import URLHandler
+from data_pipeline.InfoHandler import InfoHandler
+from data_pipeline.parsing import url_parser
 import asyncio
 import itertools
 from tqdm import tqdm
@@ -24,7 +26,9 @@ if __name__ == "__main__":
 
 
     db = DBConnection()
-    url_handler = URLHandler(dbconnection=db)
-    url_handler.run([1, 100], batch_size=400)
+    # url_handler = URLHandler(dbconnection=db)
+    # url_handler.run([1, 100], batch_size=400)
+    info_handler = InfoHandler(dbconnection=db)
+    info_handler.run()
     db.close_session()
 
