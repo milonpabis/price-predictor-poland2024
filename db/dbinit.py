@@ -8,7 +8,7 @@ Base = declarative_base()
 class Urls(Base):
     __tablename__ = "urls"
 
-    id = Column(Integer, primary_key=True)
+    id  = Column(Integer, primary_key=True)
     url = Column(String, nullable=False, unique=True)
 
 
@@ -18,24 +18,26 @@ class Offers(Base):
     id = Column(Integer, primary_key=True)
     url_id = Column(Integer, ForeignKey("urls.id"), nullable=False, unique=True)
 
-    offer_type = Column(String, nullable=False)
-    price = Column(String, nullable=False)
-    area = Column(String, nullable=False)
-    longitude = Column(String, nullable=False)
-    latitude = Column(String, nullable=False)
-
-    ownership = Column(String, nullable=True)
-    rooms = Column(String, nullable=True)
+    price               = Column(String, nullable=False)
+    area                = Column(String, nullable=False)
+    rooms               = Column(String, nullable=True)
+    floor               = Column(String, nullable=True)
+    floor_num           = Column(String, nullable=True)
     construction_status = Column(String, nullable=True)
-    floor = Column(String, nullable=True)
-    balcony = Column(String, nullable=True)
-    terrace = Column(String, nullable=True)
-    garden = Column(String, nullable=True)
-    rent_price = Column(String, nullable=True)
-    parking = Column(String, nullable=True)
-    build_year = Column(String, nullable=True)
-    lift = Column(String, nullable=True)
-    city = Column(String, nullable=True)
+    ownership           = Column(String, nullable=True)
+    build_year          = Column(String, nullable=True)
+    balcony             = Column(String, nullable=True)
+    terrace             = Column(String, nullable=True)
+    lift                = Column(String, nullable=True)
+    garage              = Column(String, nullable=True)
+    market              = Column(String, nullable=True)
+    offer_type          = Column(String, nullable=True)
+    city                = Column(String, nullable=True)
+    voivodeship         = Column(String, nullable=True)
+    longitude           = Column(String, nullable=False)   
+    latitude            = Column(String, nullable=False)
+    created_at          = Column(String, nullable=True)
+    modified_at         = Column(String, nullable=True)
 
     url = relationship("Urls", backref="offers")
 
@@ -43,9 +45,9 @@ class Offers(Base):
 class Images(Base):
     __tablename__ = "images"
 
-    id = Column(Integer, primary_key=True)
+    id     = Column(Integer, primary_key=True)
     url_id = Column(Integer, ForeignKey("offers.id"), nullable=False)
-    url = Column(String, nullable=False)
+    url    = Column(String, nullable=False)
 
 
 

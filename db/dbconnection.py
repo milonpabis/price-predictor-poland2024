@@ -2,7 +2,7 @@ from db.dbinit import Urls, Offers, create_engine, sessionmaker
 from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.dialects.postgresql import insert
-from typing import Iterable, List
+from typing import Iterable, Tuple, List
 from utils import timelog
 
 
@@ -28,9 +28,28 @@ class DBConnection:
             self.session.rollback()
             ... # close connection
 
+    
+    @timelog("Adding offers to DB")
+    def add_offers(self, offers: Iterable[Tuple[str]]) -> None:
+        try:
+            offers = [Offers(url_id=url_idx, price=price, area=area, rooms=rooms, floor=floor, floor_num=floor_num,
+                              construction_status=construction_status, ownership=ownership, build_year=build_year,
+                              balcony=balcony, terrace=terrace, lift=lift, garage=garage, market=market, offer_type=offer_type,
+                              city=city, voivodeship=voivodeship, longitude=longitude, latitude=latitude, created_at=created_at,
+                              modified_at=modified_at) for url_idx, price, area, rooms, floor, floor_num, construction_status,
+                              ownership, build_year, balcony, terrace, lift, garage, market, offer_type, city, voivodeship, longitude,
+                              latitude, created_at, modified_at in offers]
+            self.session.add_all(offers)
+            self.session.commit()
+
+        except Exception as exception:
+            print(exception)
+            self.session.rollback()
+            ...
+
     def get_distinct_urls(self) -> List[str]:
-        result = self.session.execute(text("SELECT DISTINCT url FROM urls;"))
-        return [row[0] for row in result]
+        result = self.session.execute(text("SELECT DISTINCT url, id FROM urls;"))
+        return result.fetchall()
 
     
     def close_session(self) -> None:

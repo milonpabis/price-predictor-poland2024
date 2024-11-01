@@ -4,13 +4,14 @@ from typing import Set, List, Callable
 from multiprocessing import cpu_count
 import json
 from utils import *
+from functools import partial
 
 @timelog("HTMLs Parsing")
-def parse_all_htmls(parse_fun: Callable, htmls: List[str]) -> Set[str]:
+def parse_all_htmls(parse_fun: Callable, htmls: List[str], *args) -> Set[str]:
     urls = set()
 
     with ProcessPoolExecutor(max_workers=cpu_count()-1) as executor: # Process because of GIL
-        results = executor.map(parse_fun, htmls)
+        results = executor.map(parse_fun, htmls, *args)
 
         for result in results:
             urls |= result
@@ -21,7 +22,7 @@ def url_parser(html: str) -> Set[str]:
     urls = set(MAIN_URI + a["href"] for a in soup.find_all("a") if "/pl/oferta" in a["href"] and a["href"].startswith("/pl"))
     return urls
 
-def info_parser(html: str) -> Set[str]:
+def info_parser(html: str, url_idx: str) -> Set[str]:
     def get_info(d: dict) -> tuple:
         created_at = d["createdAt"] if "createdAt" in d else "-1"
         modified_at = d["modifiedAt"] if "modifiedAt" in d else "-1"
@@ -35,6 +36,8 @@ def info_parser(html: str) -> Set[str]:
         status = target["Construction_status"][0] if "Construction_status" in target else "-1"
         price = target["Price"] if "Price" in target else "-1"
         rooms = target["Rooms_num"][0] if "Rooms_num" in target else "-1"
+        market = target["MarketType"] if "MarketType" in target else "-1"
+        offer_type = target["ProperType"] if "ProperType" in target else "-1"
 
         loc = d["location"]
         longitude = loc["coordinates"]["longitude"] if "coordinates" in loc else "-1"
@@ -49,8 +52,8 @@ def info_parser(html: str) -> Set[str]:
         garage = str(int("garage" in extras))
 
         result = set()
-        result.add((price, area, rooms, floor, floor_num,
-                status, ownership, build_year, balcony, terrace, lift, garage,
+        result.add((url_idx, price, area, rooms, floor, floor_num,
+                status, ownership, build_year, balcony, terrace, lift, garage, market, offer_type,
                 city, voivodeship, longitude, latitude,
                 created_at, modified_at))
 
