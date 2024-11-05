@@ -29,6 +29,5 @@ if __name__ == "__main__":
     # url_handler = URLHandler(dbconnection=db)
     # url_handler.run([1, 100], batch_size=400)
     info_handler = InfoHandler(dbconnection=db)
-    info_handler.run()
-    db.close_session()
+    info_handler.run(batch_size=400)
 

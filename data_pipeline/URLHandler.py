@@ -1,7 +1,7 @@
 from data_pipeline.fetching import fetch_all_htmls
 from data_pipeline.parsing import parse_all_htmls, url_parser
 from db.dbconnection import DBConnection
-from utils import timelog, get_batches
+from utils import *
 import asyncio
 from typing import List
 
@@ -20,9 +20,12 @@ class URLHandler:
             self.run_batch(batch_range)
 
     def run_batch(self, batch_idx_range: List[int]) -> None:
-        urls = asyncio.run(fetch_all_htmls(batch_idx_range))
+        urls = asyncio.run(fetch_all_htmls(self.generate_urls(batch_idx_range)))
         urls = parse_all_htmls(url_parser, urls)
         self.dbconnection.add_urls(urls)
+
+    def generate_urls(self, idx_range: List[int]) -> List[str]:
+        return [ENDPOINT + str(i) for i in range(idx_range[0], idx_range[1]+1)]
 
 
 
