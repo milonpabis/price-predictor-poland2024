@@ -9,6 +9,7 @@ import asyncio
 import itertools
 from tqdm import tqdm
 from datetime import datetime
+from db.__init__ import NEON_CONNECTION_URI
 
 # MODEL PREDICTS THE PRICE OF A FLAT 20m2 - 80m2 IN POLAND
 
@@ -25,7 +26,7 @@ if __name__ == "__main__":
     # - parsing on separated threads
 
 
-    db = DBConnection()
+    db = DBConnection(NEON_CONNECTION_URI)
     # url_handler = URLHandler(dbconnection=db)
     # url_handler.run([1, 100], batch_size=400)
     info_handler = InfoHandler(dbconnection=db)

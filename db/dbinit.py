@@ -1,3 +1,4 @@
+import os
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
 import psycopg2
@@ -73,6 +74,11 @@ if __name__ == "__main__":
     except psycopg2.errors.DuplicateDatabase:
         print("Database already exists")
     
-    engine = create_engine("postgresql+psycopg2://postgres:password@localhost:5432/FlatsDB")
+    db_uri = os.environ.get("DB_URI_NEON")
+    db_password = os.environ.get("DB_PASSWORD_NEON")
+    if not db_uri or not db_password:
+        raise ValueError("DB_URI_NEON and DB_PASSWORD_NEON environment variables must be set")
+    
+    engine = create_engine(f"postgresql://FlatsDB_owner:{db_password}@{db_uri}/FlatsDB?sslmode=require")
     Base.metadata.create_all(engine)
 

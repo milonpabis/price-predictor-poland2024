@@ -8,8 +8,8 @@ from utils import *
 
 class DBConnection:
 
-    def __init__(self, db_name: str = "FlatsDB", password: str = "password"):
-        self.engine = create_engine(f"postgresql+psycopg2://postgres:{password}@localhost/{db_name}")
+    def __init__(self, connection_string: str):
+        self.engine = create_engine(connection_string)
         self.Session = sessionmaker(bind=self.engine)
 
     @timelog("Adding URLs to DB")
@@ -51,3 +51,6 @@ class DBConnection:
         with self.Session() as session:
             result = session.execute(text(Q_GET_DISTINCT_URLS))
             return result.fetchall()
+        
+
+
