@@ -1,5 +1,6 @@
 import asyncio
 from functools import wraps
+import math
 import time
 import random
 from typing import List
@@ -57,9 +58,9 @@ def text_format(prefix: str, time: float, length: int = None) -> str:
 
 
 
-def get_batches(min_idx: int, max_idx: int, batch_size: int) -> List[List[int]]:
-    l = (max_idx - min_idx) // batch_size + (not (max_idx - min_idx) % batch_size)
-    return [[batch_size * i + 1, batch_size * (i + 1)] for i in range(0, l+1)]
+def get_batches(l: int, r: int, batch_size: int) -> List[List[int]]:
+    n_batches = math.ceil((r-l)/batch_size)
+    return [[l+i*batch_size, l+(i+1)*batch_size if i != n_batches-1 else r] for i in range(n_batches)]
 
 
 
