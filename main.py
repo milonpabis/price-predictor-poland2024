@@ -5,6 +5,7 @@ from data_pipeline.fetching import fetch_all_htmls, MAIN_URI
 from data_pipeline.URLHandler import URLHandler
 from data_pipeline.InfoHandler import InfoHandler
 from data_pipeline.parsing import url_parser
+from data_pipeline.Pipelines import ExtractAndLoad
 import asyncio
 import itertools
 from tqdm import tqdm
@@ -20,10 +21,7 @@ if __name__ == "__main__":
     # app.exec()
 
     # TODO:
-    # - collecting every record and then saving it to the database
     # - try to find a way to iterate only on new listings
-    # - separate http request from parsing
-    # - parsing on separated threads
 
 
     db = DBConnection(NEON_CONNECTION_URI)
@@ -31,4 +29,7 @@ if __name__ == "__main__":
     # url_handler.run([1, 100], batch_size=400)
     info_handler = InfoHandler(dbconnection=db)
     info_handler.run(batch_size=400)
+
+    # pipeline = ExtractAndLoad()
+    # pipeline.run()
 
