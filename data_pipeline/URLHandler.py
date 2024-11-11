@@ -25,7 +25,7 @@ class URLHandler:
         self.dbconnection.add_urls(urls)
 
     def generate_urls(self, idx_range: List[int]) -> List[str]:
-        return [ENDPOINT + str(i) for i in range(idx_range[0], idx_range[1]+1)]
+        return [ENDPOINT + str(i) for i in range(idx_range[0], idx_range[1])]
 
 
 

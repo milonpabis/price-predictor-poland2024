@@ -22,6 +22,7 @@ if __name__ == "__main__":
 
     # TODO:
     # - try to find a way to iterate only on new listings
+    # - duplicates - try to implement longest subsequence in order to find duplicates on url level
 
 
     db = DBConnection(NEON_CONNECTION_URI)
@@ -30,6 +31,6 @@ if __name__ == "__main__":
     info_handler = InfoHandler(dbconnection=db)
     info_handler.run(batch_size=400)
 
-    # pipeline = ExtractAndLoad()
-    # pipeline.run()
+    pipeline = ExtractAndLoad()
+    pipeline.run()
 

@@ -64,9 +64,17 @@ def get_batches(l: int, r: int, batch_size: int) -> List[List[int]]:
 
 
 
+
 Q_GET_DISTINCT_URLS = """
-SELECT DISTINCT u.url, u.id FROM urls u
+SELECT u.url, u.id
+FROM urls u
 LEFT JOIN offers o ON u.id = o.url_id
-WHERE o.url_id IS NULL
+WHERE u.id IN (
+  SELECT DISTINCT ON(prefix) id
+    FROM (
+      SELECT SUBSTRING(url FROM '^(.*)-[^-]+$') prefix, id
+      FROM urls
+    ) AS subquery
+) AND o.url_id IS NULL
 ORDER BY u.id DESC;
 """
