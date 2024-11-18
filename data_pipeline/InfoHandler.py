@@ -22,6 +22,7 @@ class InfoHandler:
             raise ValueError("batch_size should be a positive integer")
         
         urls_info = self.dbconnection.get_distinct_urls()
+        print(len(urls_info))
         if len(urls_info):
             for idx, batch_range in enumerate(get_batches(0, len(urls_info), batch_size)):
                 batch = urls_info[batch_range[0]:batch_range[1]]

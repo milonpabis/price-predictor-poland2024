@@ -6,3 +6,5 @@ krk2.jpg
 *.autosave
 *__pycache__*
 data/*
+*.css
+*countries/*

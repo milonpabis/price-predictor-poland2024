@@ -25,11 +25,11 @@ if __name__ == "__main__":
     # - duplicates - try to implement longest subsequence in order to find duplicates on url level
 
 
-    db = DBConnection(NEON_CONNECTION_URI)
-    # url_handler = URLHandler(dbconnection=db)
-    # url_handler.run([1, 100], batch_size=400)
-    info_handler = InfoHandler(dbconnection=db)
-    info_handler.run(batch_size=400)
+    # db = DBConnection(NEON_CONNECTION_URI)
+    # # url_handler = URLHandler(dbconnection=db)
+    # # url_handler.run([1, 100], batch_size=400)
+    # info_handler = InfoHandler(dbconnection=db)
+    # info_handler.run(batch_size=400)
 
     pipeline = ExtractAndLoad()
     pipeline.run()
