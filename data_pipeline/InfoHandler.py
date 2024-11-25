@@ -7,7 +7,7 @@ from utils import get_batches
 import time
 import random
 
-SLEEPTIME = 10
+SLEEPTIME = 20
 
 class InfoHandler:
 
@@ -38,7 +38,7 @@ class InfoHandler:
 
     def throttle(self, idx: int, max_sleep_time: int) -> None:
         print("sleeping")
-        time.sleep(random.randint(1, max_sleep_time+1)) # throttling
+        time.sleep(random.randint(10, max_sleep_time+1)) # throttling
         if idx % 15 == 0 and idx:
             print("sleeping for ~2minutes")
             time.sleep(random.randint(100, 120))

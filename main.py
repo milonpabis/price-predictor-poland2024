@@ -10,7 +10,7 @@ import asyncio
 import itertools
 from tqdm import tqdm
 from datetime import datetime
-from db.__init__ import NEON_CONNECTION_URI
+from db.__init__ import NEON_CONNECTION_URI, LOCAL_CONNECTION_URI
 
 # MODEL PREDICTS THE PRICE OF A FLAT 20m2 - 80m2 IN POLAND
 
@@ -25,12 +25,12 @@ if __name__ == "__main__":
     # - duplicates - try to implement longest subsequence in order to find duplicates on url level
 
 
-    # db = DBConnection(NEON_CONNECTION_URI)
-    # # url_handler = URLHandler(dbconnection=db)
-    # # url_handler.run([1, 100], batch_size=400)
-    # info_handler = InfoHandler(dbconnection=db)
-    # info_handler.run(batch_size=400)
+    db = DBConnection(LOCAL_CONNECTION_URI)
+    # url_handler = URLHandler(dbconnection=db)
+    # url_handler.run([1, 100], batch_size=400)
+    info_handler = InfoHandler(dbconnection=db)
+    info_handler.run(batch_size=400)
 
-    pipeline = ExtractAndLoad()
-    pipeline.run()
+    #pipeline = ExtractAndLoad(LOCAL_CONNECTION_URI)
+    #pipeline.run()
 
