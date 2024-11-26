@@ -1,4 +1,4 @@
-from db.dbinit import Urls, Offers, create_engine, sessionmaker
+from db.dbinit import Urls, Offers, OffersClean, create_engine, sessionmaker
 from sqlalchemy import text
 from sqlalchemy.dialects.postgresql import insert
 from typing import Iterable, Tuple, List
@@ -44,6 +44,17 @@ class DBConnection:
                 session.add_all(offers, )
                 session.commit()
 
+            except Exception as exception:
+                print(exception)
+                session.rollback()
+                ...
+
+    def add_offers_clean(self, offers: pd.DataFrame) -> None:
+        with self.Session() as session:
+            try:
+                offers = offers.to_dict(orient="records")
+                session.bulk_insert_mappings(OffersClean, offers)
+                session.commit()
             except Exception as exception:
                 print(exception)
                 session.rollback()

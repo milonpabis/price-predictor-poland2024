@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from utils import timelog
 
 class FilterOutliers:
 
@@ -35,6 +36,7 @@ class FilterOutliers:
         self.df = self.df[f_arg]
         return self
 
+    @timelog("Filtering outliers")
     def run(self, df: pd.DataFrame) -> pd.DataFrame:
         self.df = df.copy()
         self.filtered = 0

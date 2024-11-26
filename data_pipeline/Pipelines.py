@@ -28,6 +28,4 @@ class CleanAndFilter:
     def run(self) -> None:
         cleaned = self.entry_cleaning.run(self.df)
         filtered = self.filter_outliers.run(cleaned)
-        
-        print(self.entry_cleaning.filtered, self.filter_outliers.filtered)
-        print(filtered.head(), filtered.shape)
+        self.db.add_offers_clean(filtered)
