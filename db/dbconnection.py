@@ -3,6 +3,8 @@ from sqlalchemy import text
 from sqlalchemy.dialects.postgresql import insert
 from typing import Iterable, Tuple, List
 from utils import *
+import pandas as pd
+import numpy as np
 
 
 
@@ -51,6 +53,15 @@ class DBConnection:
         with self.Session() as session:
             result = session.execute(text(Q_GET_DISTINCT_URLS))
             return result.fetchall()
+        
+    def get_raw_offers(self) -> pd.DataFrame:
+        with self.Session() as session:
+            res = session.execute(text(Q_GET_RAW_OFFERS))
+            df = pd.DataFrame(res.fetchall())
+            df.index = df["id"]
+            df.drop("id", axis=1, inplace=True)
+            df = df.replace("-1", np.nan)
+            return df
         
 
 

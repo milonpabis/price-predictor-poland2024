@@ -78,3 +78,12 @@ WHERE u.id IN (
 ) AND o.url_id IS NULL
 ORDER BY u.id DESC;
 """
+
+Q_GET_RAW_OFFERS = """
+SELECT *
+FROM offers
+WHERE url_id NOT IN (
+  SELECT DISTINCT url_id
+  FROM offers_clean
+);
+"""

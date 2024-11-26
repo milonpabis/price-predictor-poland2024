@@ -8,14 +8,18 @@ class EntryDataCleaning:
     Entry pipeline, initially cleaning and preparing the data for the further processing.
     """
 
-    def __init__(self, df: pd.DataFrame) -> None:
-        self.df = df.copy()
+    def __init__(self) -> None:
+        self.df = None
+        self.filtered = 0
 
     def entry_filter(self):
         trash_rows = (self.df["price"].isna()) | (self.df["floor"].isna()) | \
                 (self.df["floor_num"].isna() & self.df["construction_status"].isna() & self.df["ownership"].isna() & self.df["build_year"].isna())
         floor_filter = ~(self.df["floor"].isin(["cellar", "garret"]))
-        self.df = self.df[(~trash_rows) & floor_filter]
+        f_arg = (~trash_rows) & floor_filter
+        num_deleted = len(np.where(f_arg == False)[0]) # counting the number of deleted rows
+        self.filtered += num_deleted
+        self.df = self.df[f_arg] # filtering
         return self
 
     def extract_floors(self):
@@ -44,9 +48,13 @@ class EntryDataCleaning:
             self.df[col] = self.df[col].astype(np.float64)
         for col in ["voivodeship", "city", "offer_type", "market", "ownership"]:
             self.df[col] = self.df[col].astype(str)
+        for col in ["build_year", "floor_num"]:
+            self.df[col] = self.df[col].astype("Int32")
         return self
 
-    def run(self) -> pd.DataFrame:
+    def run(self, df: pd.DataFrame) -> pd.DataFrame:
+        self.df = df.copy()
+        self.filtered = 0
         return (
             self.entry_filter()
             .extract_floors()
