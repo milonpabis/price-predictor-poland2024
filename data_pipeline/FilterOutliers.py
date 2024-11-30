@@ -35,6 +35,22 @@ class FilterOutliers:
         self.filtered += num_deleted
         self.df = self.df[f_arg]
         return self
+    
+    def rooms(self):
+        f_arg = (self.df["rooms"].between(1, 5)) | (self.df["rooms"].isna())
+        num_deleted = len(np.where(f_arg == False)[0])
+        self.filtered += num_deleted
+        self.df = self.df[f_arg]
+        return self
+    
+    def poland_bounds(self):
+        BOUNDS = [("longitude", 14.122222, 24.145889), ("latitude", 49.002046, 54.905476)]
+        for col, min_val, max_val in BOUNDS:
+            f_arg = self.df[col].between(min_val, max_val)
+            num_deleted = len(np.where(f_arg == False)[0])
+            self.filtered += num_deleted
+            self.df = self.df[f_arg]
+        return self
 
     @timelog("Filtering outliers")
     def run(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -45,5 +61,7 @@ class FilterOutliers:
             .price()
             .area()
             .build_year()
+            .rooms()
+            .poland_bounds()
             .df
         )
