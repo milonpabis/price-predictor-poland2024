@@ -1,0 +1,9 @@
+version: 3.7
+
+services:
+  airflow-scheduler:
+  #
+  airflow-webserver:
+  #
+  postgres:
+  #

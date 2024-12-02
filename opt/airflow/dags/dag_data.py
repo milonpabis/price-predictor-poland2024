@@ -1,10 +1,10 @@
 from datetime import timedelta, datetime
-
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from data_pipeline.Pipelines import ExtractAndLoad, CleanAndFilter
-
 from db.__init__ import LOCAL_CONNECTION_URI
+
+# MAKE SURE THE DATABASE SERVER IS UP AND RUNNING!!!
 
 DEFAULT_ARGS = {
     "owner": "airflow",
@@ -12,10 +12,10 @@ DEFAULT_ARGS = {
     "retry_delay": timedelta(minutes=5)
 }
 
-def extract_and_load(**kwargs):
+def extract_and_load(**kwargs) -> None:
     ExtractAndLoad(**kwargs).run()
 
-def clean_and_filter(**kwargs):
+def clean_and_filter(**kwargs) -> None:
     CleanAndFilter(**kwargs).run()
 
 with DAG(
