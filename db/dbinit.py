@@ -1,6 +1,6 @@
 import os
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship
-from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, Float, DateTime, Date, DOUBLE_PRECISION
+from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, Float, DateTime, Date
 import psycopg2
 from db.__init__ import LOCAL_CONNECTION_URI
 
@@ -75,8 +75,8 @@ class OffersClean(Base):
     offer_type          = Column(String, nullable=True)
     city                = Column(String, nullable=True)
     voivodeship         = Column(String, nullable=True)
-    longitude           = Column(DOUBLE_PRECISION, nullable=False)   
-    latitude            = Column(DOUBLE_PRECISION, nullable=False)
+    longitude           = Column(Float, nullable=False)   
+    latitude            = Column(Float, nullable=False)
     created_at          = Column(DateTime, nullable=True)
     modified_at         = Column(DateTime, nullable=True)
 

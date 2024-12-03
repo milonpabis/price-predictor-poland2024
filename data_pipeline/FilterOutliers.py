@@ -9,7 +9,7 @@ class FilterOutliers:
         self.filtered = 0
 
     def floor_num(self):
-        f_arg = (self.df["floor_num"].between(1, 17)) | (self.df["floor_num"].isna())
+        f_arg = (self.df["floor_num"].between(1, 17)) | (self.df["floor_num"].isna()) & (self.df["floor_num"] >= self.df["floor"])
         num_deleted = len(np.where(f_arg == False)[0])
         self.filtered += num_deleted
         self.df = self.df[f_arg]
